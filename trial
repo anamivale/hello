@@ -1,6 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strings"
+)
 
 type Stack struct {
 	data []int
@@ -16,8 +21,8 @@ func (s *Stack) Pop() int {
 	if len(s.data) == 0 {
 		return 0 // or return an error
 	}
-	val := s.data[len(s.data)-1]
-	s.data = s.data[:len(s.data)-1]
+	val := s.data[0]
+	s.data = s.data[1:]
 	return val
 }
 
@@ -128,16 +133,22 @@ func main() {
 	stackB := &Stack{}
 
 	// Example: Populate stack A with some values
-	stackA.Push(3)
-	stackA.Push(2)
+	stackA.Push(7)
+	stackA.Push(9)
+	stackA.Push(0)
 	stackA.Push(1)
+	stackA.Push(8)
+	stackA.Push(2)
+
 
 	// Sample operations (in real scenario, read from input)
-	operations := []string{"sa", "pb", "ra", "rra", "pa"}
 
 	// Execute operations
-	for _, op := range operations {
-		switch op {
+	scanner := bufio.NewScanner(os.Stdin)
+
+	for scanner.Scan() {
+		instruction := strings.TrimSpace(scanner.Text())
+		switch instruction {
 		case "sa":
 			sa(stackA)
 		case "sb":
@@ -167,3 +178,4 @@ func main() {
 	fmt.Println("Stack A:", stackA.data)
 	fmt.Println("Stack B:", stackB.data)
 }
+//echo -e "sa\npb\npb\nrra\nrra\npb\nra\nsb\npa\nsb\npa\npa\n" | go run trial.go  "7 9 0 1 8 2"
